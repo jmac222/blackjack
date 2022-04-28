@@ -1,0 +1,27 @@
+.cards{
+    display: flex;
+}
+
+.player-cards{
+    display: flex;
+    
+}
+.dealer-cards{
+    display: flex;
+}
+
+.game-over{
+    font-size: 40px;
+    font-weight: 700;
+}
+
+body{
+    background-color: green;
+}
+h1{
+    text-align: center;
+    color: whitesmoke;
+    font-family: 'Akshar', sans-serif;
+font-family: 'Montserrat', sans-serif;
+font-family: 'Titillium Web', sans-serif;
+}
