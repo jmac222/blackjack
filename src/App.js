@@ -12,6 +12,7 @@ function App() {
   const [winner, setWinner] = useState("");
   const [counter, setCounter] = useState(0);
   const [score, setScore] = useState(0);
+  const [div, setDiv] = useState(false);
 
   // This will start a new game
   const deal = async () => {
@@ -42,7 +43,6 @@ function App() {
   };
 
   const hitMe = async () => {
-    
     if (playerDeck.length < 5) {
       setCounter(0);
       const res = await axios.get(
@@ -51,14 +51,12 @@ function App() {
       const cardData = await res.data.cards[0];
       setPlayerDeck((playerDeck) => [...playerDeck, cardData]);
     }
-    
   };
 
   const stand = async () => {
     const playerDeckVal = await playerDeckValue();
     const dealerDeckVal = await dealerDeckValue();
-    
-    
+
     let n = counter;
     let dealerCards = playerDeck.length - dealerDeck.length;
     if (dealerCards === 0) {
@@ -77,7 +75,6 @@ function App() {
 
       console.log(counter);
     }
-    
   };
 
   const playerDeckValue = async () => {
@@ -125,14 +122,45 @@ function App() {
       return <></>;
     }
   };
+
+  const Welcome = () => {
+    if(div == false){
+
+      return(
+        <div className="container">
+          <div className="welcome" >
+            <div className="close">
+              <h3 onClick={() => setDiv(true)}>X</h3>
+            </div>
+            <h2>How To Play:</h2>
+            <p>The objective of the game is to get to 21 but not go over. <br></br> The rules are: <br></br>1. Press Deal to start a new game
+              <br></br>
+              2. Press hit to add more cards to your deck
+              <br></br>
+              3. Press stand to make the dealer draw a card
+              <br></br>
+              4. If you go over 21, you lose
+              <br></br>
+              5. If you get 21 you win or the dealer goes over 21
+              <br></br>
+              6. If no one gets 21 the highest value of cards wins
+              <br></br>
+              7. Make sure to collect points and have fun!
+
+            </p>
+          </div>
+        </div>
+      )
+    }
+  }
+
   const resetGame = async () => {
     let playerDeckVal = await playerDeckValue();
     let dealerDeckVal = await dealerDeckValue();
 
-    playerDeckVal = null
-    dealerDeckVal = null
-    
-    
+    playerDeckVal = null;
+    dealerDeckVal = null;
+
     setDeckId();
     setCounter(0);
   };
@@ -145,34 +173,30 @@ function App() {
       if (playerDeckVal > 21 || dealerDeckVal === 21) {
         setGameover(true);
         setWinner("Dealer");
-        setScore(0)
+        setScore(0);
       }
 
       if (playerDeckVal === 21 || (dealerDeckVal > 21 && playerDeckVal < 21)) {
-        playerDeckVal = 19
+        playerDeckVal = 19;
         setGameover(true);
         setWinner("Player");
         let n = 100;
         setScore(score + n);
         resetGame();
-        
       }
 
       if (counter === 2) {
         if (dealerDeckVal > playerDeckVal || dealerDeckVal == playerDeckVal) {
           setGameover(true);
           setWinner("Dealer");
-          setScore(0)
+          setScore(0);
         } else {
           setGameover(true);
           setWinner("Player");
-          
-          
+
           let n = 100;
           setScore(score + n);
           resetGame();
-          
-          
         }
 
         setCounter(0);
@@ -184,6 +208,8 @@ function App() {
 
   return (
     <div className="App">
+      
+      <Welcome />
       <h1>Welcome To Blackjack</h1>
       <h2>Select Deal to Play!</h2>
 
@@ -222,6 +248,7 @@ function App() {
             );
           })}
         </div>
+      
       </div>
     </div>
   );
