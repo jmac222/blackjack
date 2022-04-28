@@ -1,27 +1,58 @@
-.cards{
-    display: flex;
+.cards {
+  display: flex;
 }
 
-.player-cards{
-    display: flex;
-    
+.player-cards {
+  display: flex;
 }
-.dealer-cards{
-    display: flex;
-}
-
-.game-over{
-    font-size: 40px;
-    font-weight: 700;
+.dealer-cards {
+  display: flex;
 }
 
-body{
-    background-color: green;
+.game-over {
+  font-size: 40px;
+  font-weight: 700;
 }
-h1{
-    text-align: center;
-    color: whitesmoke;
-    font-family: 'Akshar', sans-serif;
-font-family: 'Montserrat', sans-serif;
-font-family: 'Titillium Web', sans-serif;
+
+body {
+  background-color: green;
+}
+h1 {
+  text-align: center;
+  color: whitesmoke;
+  font-family: "Akshar", sans-serif;
+  font-family: "Montserrat", sans-serif;
+  font-family: "Titillium Web", sans-serif;
+}
+h2 {
+  text-align: center;
+  color: whitesmoke;
+  font-family: "Akshar", sans-serif;
+  font-family: "Montserrat", sans-serif;
+  font-family: "Titillium Web", sans-serif;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+button {
+  border: none;
+  background: none;
+  font-size: 30px;
+  font-family: "Akshar", sans-serif;
+  font-family: "Montserrat", sans-serif;
+  font-family: "Titillium Web", sans-serif;
+  color: whitesmoke;
+  transition: .3s ease-in-out all;
+  margin: 30px;
+}
+
+button:hover{
+    color: grey;
+    cursor: pointer;
+}
+.card{
+    margin: 10px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }

@@ -10,10 +10,15 @@ function App() {
   const [dealerDeck, setDealerDeck] = useState([]);
   const [gameover, setGameover] = useState(false);
   const [winner, setWinner] = useState("");
-  const [counter, setCounter] = useState(0)
+  const [counter, setCounter] = useState(0);
+  const [score, setScore] = useState(0);
 
   // This will start a new game
   const deal = async () => {
+    setDealerDeck([]);
+    setPlayerDeck([]);
+    setGameover(false);
+    setWinner("");
     resetGame();
     let res = await axios.get(`${api_endpoint}/deck/new/shuffle/?deck_count=6`);
 
@@ -37,35 +42,42 @@ function App() {
   };
 
   const hitMe = async () => {
+    
     if (playerDeck.length < 5) {
+      setCounter(0);
       const res = await axios.get(
         `${api_endpoint}/deck/${deckId}/draw/?count=1`
       );
       const cardData = await res.data.cards[0];
       setPlayerDeck((playerDeck) => [...playerDeck, cardData]);
     }
+    
   };
 
   const stand = async () => {
     const playerDeckVal = await playerDeckValue();
     const dealerDeckVal = await dealerDeckValue();
-    let n = counter
+    
+    
+    let n = counter;
     let dealerCards = playerDeck.length - dealerDeck.length;
+    if (dealerCards === 0) {
+      dealerCards = 1;
+    }
     const res = await axios.get(
       `${api_endpoint}/deck/${deckId}/draw/?count=${dealerCards}`
     );
-    setCounter(n += 1)
+    setCounter((n += 1));
 
-      if (dealerDeckVal <= playerDeckVal){
-
-        for (let i = 0; i < dealerCards; i++) {
-          let dealer_card = await res.data.cards[i];
-          setDealerDeck((dealerDeck) => [...dealerDeck, dealer_card]);
-        }
-        
-
-        console.log(counter);
+    if (dealerDeckVal <= playerDeckVal) {
+      for (let i = 0; i < dealerCards; i++) {
+        let dealer_card = await res.data.cards[i];
+        setDealerDeck((dealerDeck) => [...dealerDeck, dealer_card]);
       }
+
+      console.log(counter);
+    }
+    
   };
 
   const playerDeckValue = async () => {
@@ -106,60 +118,74 @@ function App() {
     if (isGameOver === true) {
       return (
         <div className="game-over-container">
-          <p className="game-over">{winner} wins</p>
+          <h1 className="game-over">{winner} wins</h1>
         </div>
       );
     } else {
       return <></>;
     }
   };
-  const resetGame = () => {
-    localStorage.clear();
-    setGameover(false);
-    setWinner("");
-    setDealerDeck([]);
-    setPlayerDeck([]);
+  const resetGame = async () => {
+    let playerDeckVal = await playerDeckValue();
+    let dealerDeckVal = await dealerDeckValue();
+
+    playerDeckVal = null
+    dealerDeckVal = null
+    
+    
     setDeckId();
-    setCounter(0)
+    setCounter(0);
   };
 
   useEffect(() => {
     const gameResult = async () => {
-      const playerDeckVal = await playerDeckValue();
-      const dealerDeckVal = await dealerDeckValue();
+      let playerDeckVal = await playerDeckValue();
+      let dealerDeckVal = await dealerDeckValue();
 
       if (playerDeckVal > 21 || dealerDeckVal === 21) {
         setGameover(true);
         setWinner("Dealer");
+        setScore(0)
       }
 
       if (playerDeckVal === 21 || (dealerDeckVal > 21 && playerDeckVal < 21)) {
+        playerDeckVal = 19
         setGameover(true);
         setWinner("Player");
+        let n = 100;
+        setScore(score + n);
+        resetGame();
+        
       }
-      
-      if(counter === 2){
-        if (dealerDeckVal > playerDeckVal || dealerDeckVal == playerDeckVal){
-          setGameover(true)
-          setWinner("Dealer")
-        }else {
+
+      if (counter === 2) {
+        if (dealerDeckVal > playerDeckVal || dealerDeckVal == playerDeckVal) {
+          setGameover(true);
+          setWinner("Dealer");
+          setScore(0)
+        } else {
+          setGameover(true);
+          setWinner("Player");
           
-          setGameover(true)
-          setWinner("Player")
+          
+          let n = 100;
+          setScore(score + n);
+          resetGame();
+          
+          
         }
 
-        setCounter(0)
-
+        setCounter(0);
       }
     };
 
     gameResult();
-  });
+  }, [playerDeck, dealerDeck, counter]);
 
   return (
     <div className="App">
       <h1>Welcome To Blackjack</h1>
-      <p>Select Deal to Play!</p>
+      <h2>Select Deal to Play!</h2>
 
       <div className="button-container">
         <button onClick={deal}>Deal</button>
@@ -167,6 +193,10 @@ function App() {
         <button onClick={stand}>Stand</button>
       </div>
       <GameOver isGameOver={gameover} />
+
+      <div className="score-container">
+        <h2>Score: {score}</h2>
+      </div>
 
       <div className="dealer-cards">
         <h2>Dealer:</h2>
