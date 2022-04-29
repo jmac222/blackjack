@@ -43,6 +43,8 @@ function App() {
     setPlayerDeck(player_deck);
   };
 
+
+  //makes player add one more card to their deck
   const hitMe = async () => {
     if (playerDeck.length < 5) {
       setCounter(0);
@@ -54,6 +56,8 @@ function App() {
     }
   };
 
+
+  //makes dealer add as many cards as player has
   const stand = async () => {
     const playerDeckVal = await playerDeckValue();
     const dealerDeckVal = await dealerDeckValue();
@@ -78,6 +82,8 @@ function App() {
     }
   };
 
+
+  //value for player
   const playerDeckValue = async () => {
     let sum = 0;
 
@@ -88,6 +94,8 @@ function App() {
 
     return sum;
   };
+
+  //value for dealer
   const dealerDeckValue = async () => {
     let sum = 0;
 
@@ -99,6 +107,7 @@ function App() {
     return sum;
   };
 
+  //Gets the individual card value
   const getCardVal = (card) => {
     let card_val = card.value;
     console.log(card_val);
@@ -112,6 +121,7 @@ function App() {
     return card_val;
   };
 
+  //Declares the winner of the game
   const GameOver = ({ isGameOver }) => {
     if (isGameOver === true) {
       return (
@@ -124,6 +134,8 @@ function App() {
     }
   };
 
+
+  //a welcome to introduce the users to the game
   const Welcome = () => {
     if(div == false){
 
@@ -154,7 +166,7 @@ function App() {
       )
     }
   }
-
+  //resets the game
   const resetGame = async () => {
     let playerDeckVal = await playerDeckValue();
     let dealerDeckVal = await dealerDeckValue();
@@ -166,6 +178,8 @@ function App() {
     setCounter(0);
   };
 
+
+  // This useEffect checks to see if the cards match any of the following if statements
   useEffect(() => {
     const gameResult = async () => {
       let playerDeckVal = await playerDeckValue();
