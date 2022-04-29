@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import "./styles/main.css";
+import "./styles/main.css"
+import {AiOutlineClose} from 'react-icons/ai'
 
 const api_endpoint = "https://deckofcardsapi.com/api";
 
@@ -130,7 +131,7 @@ function App() {
         <div className="container">
           <div className="welcome" >
             <div className="close">
-              <h3 onClick={() => setDiv(true)}>X</h3>
+              <h3 onClick={() => setDiv(true)}><AiOutlineClose /></h3>
             </div>
             <h2>How To Play:</h2>
             <p>The objective of the game is to get to 21 but not go over. <br></br> The rules are: <br></br>1. Press Deal to start a new game
@@ -186,7 +187,8 @@ function App() {
       }
 
       if (counter === 2) {
-        if (dealerDeckVal > playerDeckVal || dealerDeckVal == playerDeckVal) {
+        
+        if (21 > dealerDeckVal > playerDeckVal || dealerDeckVal == playerDeckVal) {
           setGameover(true);
           setWinner("Dealer");
           setScore(0);
